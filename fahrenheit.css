@@ -1,63 +1,74 @@
 body {
-    background-color: black;
-    color: white;
-    font-family: 'Josefin Sans', sans-serif;
-    margin: 15px;
+  background-color: black;
+  color: white;
+  font-family: "Josefin Sans", sans-serif;
+  margin: 15px;
 }
 
 #container {
-    background-color: grey;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-content: space-around;
-    justify-content: space-around;
+  background-color: grey;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+  justify-content: space-around;
 }
 
 #location {
-    padding: 5%;
-    font-size: 3vw;
-    text-align: left;
+  padding: 5%;
+  font-size: 3vw;
+  text-align: left;
+  min-height: 5vw;
+}
+
+#locationInput {
+  display: none;
+}
+
+#location a,
+#location a:visited {
+  color: white;
+  text-decoration: none;
 }
 
 #temp {
-    background-color: cadetblue;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 60%;
-    width: 75%;
+  background-color: cadetblue;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 60%;
+  width: 75%;
 }
 
 .text {
-    font-size: 15vw;
-    color:beige
+  font-size: 15vw;
+  color: beige;
 }
 
 #celsius {
-    padding: 1%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50%;
-    width: 50%;
+  padding: 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  width: 50%;
 }
 
 #fahrenheit {
-    padding: 1%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50%;
-    width: 50%;
+  padding: 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  width: 50%;
 }
 
 #wtf {
-    margin: 5px;
-    padding: 10px;
-    padding-right: 15px;
-    text-align: right;
-    font-size: 3vw;
+  margin: 5px;
+  padding: 10px;
+  padding-right: 15px;
+  text-align: right;
+  font-size: 3vw;
 }

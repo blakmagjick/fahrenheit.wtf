@@ -21,9 +21,25 @@ const getWeather = () => {
       const fahr_div = document.querySelector("#fahrenheit div");
       fahr_div.innerHTML = Math.round(temp_f) + "ºF";
       state.place = data.name;
-      const location_div = document.querySelector("#location");
+      const location_div = document.querySelector("#location a");
       location_div.innerHTML = state.place;
     });
+};
+
+const showLocationInput = () => {
+  const text = document.querySelector("#locationText");
+  text.style.display = "none";
+  const input = document.querySelector("#locationInput");
+  input.style.display = "block";
+  input.onblur = hideLocationInput;
+  input.focus();
+};
+
+const hideLocationInput = () => {
+  const text = document.querySelector("#locationText");
+  text.style.display = "inline";
+  const input = document.querySelector("#locationInput");
+  input.style.display = "none";
 };
 
 const getDefaultLocation = () => {
