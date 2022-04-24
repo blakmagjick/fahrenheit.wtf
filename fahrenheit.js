@@ -92,6 +92,7 @@ const getDefaultLocation = () => {
 };
 
 const getBrowserLocation = () => {
+  const timeout_ms = 5000;
   return new Promise((resolve) => {
     if (!navigator.geolocation) {
       console.log("Geolocation not supported");
@@ -99,18 +100,27 @@ const getBrowserLocation = () => {
       resolve(state);
     } else {
       showLoadingText();
+      const fallback = setTimeout(() => {
+        if (!state.lat && !state.lon) {
+          console.log("Geolocation never returned");
+          getDefaultLocation();
+          resolve(state);
+        }
+      }, timeout_ms);
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          clearTimeout(fallback);
           state.lat = position.coords.latitude;
           state.lon = position.coords.longitude;
           resolve(state);
         },
         (err) => {
           console.log("Geolocation not permitted:", err);
+          clearTimeout(fallback);
           getDefaultLocation();
           resolve(state);
         },
-        { timeout: 5000 }
+        { timeout: timeout_ms }
       );
     }
   });
