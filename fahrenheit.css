@@ -17,9 +17,9 @@ body {
 
 #location {
   padding: 5%;
-  font-size: 3vw;
+  font-size: 6vw;
   text-align: left;
-  min-height: 5vw;
+  min-height: 6.25vw;
 }
 
 #locationInput {
@@ -70,5 +70,5 @@ body {
   padding: 10px;
   padding-right: 15px;
   text-align: right;
-  font-size: 3vw;
+  font-size: 6vw;
 }

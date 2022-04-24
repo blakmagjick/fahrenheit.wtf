@@ -13,15 +13,17 @@ const weatherQuery = () => {
 const locationQuery = (search) => {
   const q = encodeURIComponent(search);
   const url = `https://api.openweathermap.org/geo/1.0/direct?q=${q}&limit=5&appid=${appid}`;
-  console.log("locationQuery", url);
   return url;
+};
+
+const reverseLocationQuery = () => {
+  return `http://api.openweathermap.org/geo/1.0/reverse?lat=${state.lat}&lon=${state.lon}&limit=1&appid=${appid}`;
 };
 
 const getWeather = () => {
   fetch(weatherQuery())
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       const temp_c = data.main.temp;
       const temp_f = temp_c * 1.8 + 32;
       const celsius_div = document.querySelector("#celsius div");
@@ -34,20 +36,24 @@ const getWeather = () => {
     });
 };
 
+const setLocationState = (location) => {
+  // location is an openweathermap geo API response object
+  state.lat = location.lat;
+  state.lon = location.lon;
+  state.place = location.name;
+  if (location.state) state.place += ", " + location.state;
+  if (location.country) state.place += ", " + location.country;
+};
+
 const getLocationByName = () => {
   const input = document.querySelector("#locationInput");
   const search = input.value;
   fetch(locationQuery(search))
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       // TODO: Let users select from a dropdown, rather than just using the first one
-      const location = data[0];
-      state.lat = location.lat;
-      state.lon = location.lon;
-      state.place = location.name;
-      if (location.state) state.place += ", " + location.state;
-      if (location.country) state.place += ", " + location.country;
+      setLocationState(data[0]);
       getWeather();
       hideLocationInput();
     });
@@ -69,10 +75,18 @@ const hideLocationInput = () => {
   input.style.display = "none";
 };
 
+const showLoadingText = () => {
+  const text = document.querySelector("#locationText");
+  text.innerHTML = "Loading...";
+  const celsius_div = document.querySelector("#celsius div");
+  celsius_div.innerHTML = "--ºC";
+  const fahr_div = document.querySelector("#fahrenheit div");
+  fahr_div.innerHTML = "--ºF";
+};
+
 const getDefaultLocation = () => {
-  state.lat = 37.75;
-  state.lon = -122.1;
-  state.place = "Berkeley, CA";
+  state.lat = 37.87;
+  state.lon = -122.27;
 };
 
 const getBrowserLocation = () => {
@@ -82,6 +96,7 @@ const getBrowserLocation = () => {
       getDefaultLocation();
       resolve(state);
     } else {
+      showLoadingText();
       navigator.geolocation.getCurrentPosition(
         (position) => {
           state.lat = position.coords.latitude;
@@ -99,5 +114,9 @@ const getBrowserLocation = () => {
 };
 
 const pageLoaded = () => {
-  getBrowserLocation().then(() => getWeather());
+  getBrowserLocation()
+    .then(() => fetch(reverseLocationQuery()))
+    .then((response) => response.json())
+    .then((data) => setLocationState(data[0]))
+    .then(() => getWeather());
 };
