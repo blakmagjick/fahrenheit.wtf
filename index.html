@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>WTF, Fahrenheit!</title>
+        <meta charset="utf-8" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9,17 +10,17 @@
         <link rel="stylesheet" href="fahrenheit.css">
         <script src="fahrenheit.js"></script>
     </head>
-    <body>
+    <body onLoad="pageLoaded()">
         <div id="container">
             <div id="location">
                 Berkeley, CA
             </div>
             <div id="temp">
                 <div id="celsius">
-                    <div class="text">23ºC</div>
+                    <div class="text"></div>
                 </div>
                 <div id="fahrenheit">
-                    <div class="text">85ºF</div>
+                    <div class="text"></div>
                 </div>
             </div>
             <div id="wtf">
