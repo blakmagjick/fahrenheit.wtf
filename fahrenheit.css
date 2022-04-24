@@ -23,6 +23,7 @@ body {
 }
 
 #locationInput {
+  font-size: 5vw;
   display: none;
 }
 

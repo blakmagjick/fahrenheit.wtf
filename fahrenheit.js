@@ -63,6 +63,7 @@ const showLocationInput = () => {
   const text = document.querySelector("#locationText");
   text.style.display = "none";
   const input = document.querySelector("#locationInput");
+  input.value = "";
   input.style.display = "block";
   input.onblur = hideLocationInput;
   input.focus();
@@ -73,6 +74,7 @@ const hideLocationInput = () => {
   text.style.display = "inline";
   const input = document.querySelector("#locationInput");
   input.style.display = "none";
+  input.blur();
 };
 
 const showLoadingText = () => {
@@ -107,7 +109,8 @@ const getBrowserLocation = () => {
           console.log("Geolocation not permitted:", err);
           getDefaultLocation();
           resolve(state);
-        }
+        },
+        { timeout: 5000 }
       );
     }
   });
