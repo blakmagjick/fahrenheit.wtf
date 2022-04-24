@@ -17,7 +17,7 @@ const locationQuery = (search) => {
 };
 
 const reverseLocationQuery = () => {
-  return `http://api.openweathermap.org/geo/1.0/reverse?lat=${state.lat}&lon=${state.lon}&limit=1&appid=${appid}`;
+  return `https://api.openweathermap.org/geo/1.0/reverse?lat=${state.lat}&lon=${state.lon}&limit=1&appid=${appid}`;
 };
 
 const getWeather = () => {
