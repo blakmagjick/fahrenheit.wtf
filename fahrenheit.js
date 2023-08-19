@@ -6,8 +6,8 @@ const state = {
 
 const appid = atob("MTViMDM1YTcxMzFlYjNlMGY1YzNjOTg2YjEzY2JmNTA="); // ha ha
 
-const weatherQuery = () => {
-  return `https://api.openweathermap.org/data/2.5/weather?lat=${state.lat}&lon=${state.lon}&units=metric&appid=${appid}`;
+const weatherQuery = (currentState) => {
+  return `https://api.openweathermap.org/data/2.5/weather?lat=${currentState.lat}&lon=${currentState.lon}&units=metric&appid=${appid}`;
 };
 
 const locationQuery = (search) => {
@@ -20,17 +20,26 @@ const reverseLocationQuery = () => {
   return `https://api.openweathermap.org/geo/1.0/reverse?lat=${state.lat}&lon=${state.lon}&limit=1&appid=${appid}`;
 };
 
+const extractTemperatures = (apiResponse) => {
+  const temp_c = apiResponse.main.temp;
+  const temp_f = temp_c * 1.8 + 32;
+  return {
+    place: apiResponse.name,
+    c: Math.round(temp_c) + "ºC",
+    f: Math.round(temp_f) + "ºF",
+  };
+};
+
 const getWeather = () => {
-  fetch(weatherQuery())
+  fetch(weatherQuery(state))
     .then((response) => response.json())
     .then((data) => {
-      const temp_c = data.main.temp;
-      const temp_f = temp_c * 1.8 + 32;
+      const temp = extractTemperatures(data);
       const celsius_div = document.querySelector("#celsius div");
-      celsius_div.innerHTML = Math.round(temp_c) + "ºC";
+      celsius_div.innerHTML = temp.c;
       const fahr_div = document.querySelector("#fahrenheit div");
-      fahr_div.innerHTML = Math.round(temp_f) + "ºF";
-      if (!state.place) state.place = data.name;
+      fahr_div.innerHTML = temp.f;
+      if (!state.place) state.place = temp.place;
       const location_div = document.querySelector("#location a");
       location_div.innerHTML = state.place;
     });
@@ -133,3 +142,5 @@ const pageLoaded = () => {
     .then((data) => setLocationState(data[0]))
     .then(() => getWeather());
 };
+
+module.exports = { getDefaultLocation, weatherQuery };
