@@ -1,3 +1,9 @@
+/*
+Fahrenheit.wtf is a simple weather app that displays the current temperature in
+both Celsius and Fahrenheit for the user's current location. The user can also
+search for the weather in a different location.
+*/
+
 const state = {
   lat: 0,
   lon: 0,
@@ -20,6 +26,8 @@ const reverseLocationQuery = () => {
   return `https://api.openweathermap.org/geo/1.0/reverse?lat=${state.lat}&lon=${state.lon}&limit=1&appid=${appid}`;
 };
 
+// The extractTemperatures function takes the API response and extracts the
+// current temperature in Celsius and Fahrenheit, as well as the location name.
 const extractTemperatures = (apiResponse) => {
   const temp_c = apiResponse.main.temp;
   const temp_f = temp_c * 1.8 + 32;
@@ -30,6 +38,8 @@ const extractTemperatures = (apiResponse) => {
   };
 };
 
+// The getWeather function fetches the weather data from the OpenWeatherMap API
+// and updates the DOM with the current temperature in both Celsius and Fahrenheit.
 const getWeather = () => {
   fetch(weatherQuery(state))
     .then((response) => response.json())
