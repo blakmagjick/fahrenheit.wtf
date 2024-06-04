@@ -47,7 +47,7 @@ const extractTemperatures = (apiResponse) => {
 // The getWeather function fetches the weather data from the OpenWeatherMap API
 // and updates the DOM with the current temperature in both Celsius and Fahrenheit.
 const getWeather = () => {
-  fetch(weatherQuery(state))
+  return fetch(weatherQuery(state))
     .then((response) => response.json())
     .then((data) => {
       const temp = extractTemperatures(data);
@@ -187,4 +187,5 @@ module.exports = {
   pageLoaded,
   reverseLocationQuery,
   extractTemperatures,
+  getWeather,
 };

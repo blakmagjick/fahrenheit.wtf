@@ -1,4 +1,12 @@
-const { weatherQuery } = require("./fahrenheit");
+const { weatherQuery, getWeather } = require("./fahrenheit");
+const fetchMock = require("jest-fetch-mock");
+const { JSDOM } = require("jsdom");
+
+fetchMock.enableMocks();
+
+// Mock the DOM
+const { window } = new JSDOM();
+global.document = window.document;
 
 describe("Weather Query", () => {
   describe("When provided a valid latitude and longitude", () => {
@@ -97,5 +105,47 @@ describe("Extract Temperatures", () => {
       const temp = extractTemperatures(apiResponse);
       expect(temp.f).toBe("68ºF");
     });
+  });
+});
+
+describe("getWeather function", () => {
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+
+  it("fetches weather and updates the DOM", async () => {
+    const mockData = {
+      main: { temp: 20 },
+      name: "San Francisco",
+    };
+
+    fetch.mockResponseOnce(JSON.stringify(mockData));
+
+    // Mock the DOM elements
+    const celsius_div = document.createElement("div");
+    celsius_div.id = "celsius";
+    const celsius_child_div = document.createElement("div");
+    celsius_div.appendChild(celsius_child_div);
+    document.body.appendChild(celsius_div);
+
+    const fahr_div = document.createElement("div");
+    fahr_div.id = "fahrenheit";
+    const fahr_child_div = document.createElement("div");
+    fahr_div.appendChild(fahr_child_div);
+    document.body.appendChild(fahr_div);
+
+    const location_div = document.createElement("div");
+    location_div.id = "location";
+    const location_a_div = document.createElement("a");
+    location_div.appendChild(location_a_div);
+    document.body.appendChild(location_div);
+
+    // Call the function
+    await getWeather();
+
+    // Check the results
+    expect(celsius_child_div.innerHTML).toBe("20ºC");
+    expect(fahr_child_div.innerHTML).toBe("68ºF");
+    expect(location_a_div.innerHTML).toBe("San Francisco");
   });
 });
