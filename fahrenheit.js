@@ -28,8 +28,8 @@ const locationQuery = (search) => {
 };
 
 // The reverseLocationQuery is used to look up a location by latitude and longitude.
-const reverseLocationQuery = () => {
-  return `https://api.openweathermap.org/geo/1.0/reverse?lat=${state.lat}&lon=${state.lon}&limit=1&appid=${appid}`;
+const reverseLocationQuery = (search) => {
+  return `https://api.openweathermap.org/geo/1.0/reverse?lat=${search.lat}&lon=${search.lon}&limit=1&appid=${appid}`;
 };
 
 // The extractTemperatures function takes the API response and extracts the
@@ -174,10 +174,16 @@ const getBrowserLocation = () => {
 // from the OpenWeatherMap API and updates the DOM with the current temperature.
 const pageLoaded = () => {
   getBrowserLocation()
-    .then(() => fetch(reverseLocationQuery()))
+    .then(() => fetch(reverseLocationQuery(state)))
     .then((response) => response.json())
     .then((data) => setLocationState(data[0]))
     .then(() => getWeather());
 };
 
-module.exports = { getDefaultLocation, weatherQuery, pageLoaded };
+module.exports = {
+  getDefaultLocation,
+  weatherQuery,
+  locationQuery,
+  pageLoaded,
+  reverseLocationQuery,
+};
