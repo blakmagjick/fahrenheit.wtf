@@ -19,6 +19,11 @@ describe("Weather Query", () => {
       const url = weatherQuery(validLocation);
       expect(url).toMatch(/[^a-z]lon=-119&/);
     });
+
+    test("weatherQuery includes an appid query parameter", () => {
+      const url = weatherQuery(validLocation);
+      expect(url).toMatch(/appid=[a-z0-9]+/);
+    });
   });
 });
 
@@ -38,10 +43,14 @@ describe("Location Query", () => {
       const url = locationQuery(place);
       expect(url).toMatch(/[^a-z]q=San%20Francisco&/);
     });
+
+    test("locationQuery includes an appid query parameter", () => {
+      const url = locationQuery(place);
+      expect(url).toMatch(/appid=[a-z0-9]+/);
+    });
   });
 });
 
-// The reverseLocationQuery function is used to look up a location by latitude and longitude.
 describe("Reverse Location Query", () => {
   const { reverseLocationQuery } = require("./fahrenheit");
   const apiResponse = { lat: 38, lon: -119 };
@@ -60,5 +69,33 @@ describe("Reverse Location Query", () => {
   test("reverseLocationQuery includes longitudinal geographic position in the query string", () => {
     const url = reverseLocationQuery(apiResponse);
     expect(url).toMatch(/[^a-z]lon=-119&/);
+  });
+
+  test("reverseLocationQuery includes an appid query parameter", () => {
+    const url = reverseLocationQuery(apiResponse);
+    expect(url).toMatch(/appid=[a-z0-9]+/);
+  });
+});
+
+describe("Extract Temperatures", () => {
+  const { extractTemperatures } = require("./fahrenheit");
+
+  describe("When provided an API response object", () => {
+    const apiResponse = { main: { temp: 20 }, name: "San Francisco" };
+
+    test("extractTemperatures returns an object with the location name", () => {
+      const temp = extractTemperatures(apiResponse);
+      expect(temp.place).toBe("San Francisco");
+    });
+
+    test("extractTemperatures returns an object with the temperature in Celsius", () => {
+      const temp = extractTemperatures(apiResponse);
+      expect(temp.c).toBe("20ºC");
+    });
+
+    test("extractTemperatures returns an object with the temperature in Fahrenheit", () => {
+      const temp = extractTemperatures(apiResponse);
+      expect(temp.f).toBe("68ºF");
+    });
   });
 });

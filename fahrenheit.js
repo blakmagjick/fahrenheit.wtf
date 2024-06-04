@@ -186,4 +186,5 @@ module.exports = {
   locationQuery,
   pageLoaded,
   reverseLocationQuery,
+  extractTemperatures,
 };
